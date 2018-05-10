@@ -48,7 +48,7 @@ export default class SearchInput extends Component {
         this.autocomplete.markNext();
         break;
       case ENTER:
-        this.search();
+        this.search(this.inputRef.value);
         break;
       default:
     }
@@ -77,11 +77,13 @@ export default class SearchInput extends Component {
     }
   }
 
-  search() {
+  search(query) {
     if (!this.runSearch) return;
+    let active = this.autocomplete.getActive();
+
     this.close();
-    const active = this.autocomplete.getActive();
-    this.runSearch(active || this.inputRef.value);
+    this.inputRef.value = active || query;
+    this.runSearch(this.inputRef.value);
     document.activeElement.blur();
   }
 }
