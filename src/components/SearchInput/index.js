@@ -1,16 +1,40 @@
+import _ from 'lodash';
 import Component from '../../abstract/Component';
 import * as keyboardCodes from '../../constants/KeyboardNavKeyCodes';
+import Autocomplete from './Autocomplete';
+import { searchUsers } from '../../api/users';
+import template from './index.html';
 
 export default class SearchInput extends Component {
-  init() {
-    this.inputRef = this.$el.querySelector('input');
-    this.inputRef.addEventListener('focus', this.open.bind(this));
-    this.inputRef.addEventListener('keyup', this.handleKeyUp.bind(this));
-    this.inputRef.addEventListener('input', this.handleChange.bind(this));
+  get template() {
+    return template;
   }
 
-  open() {
-    // console.log('open', this);
+  constructor() {
+    super(...arguments);
+    this.opened = false;
+    this.autocomplete = new Autocomplete({
+      search: this.search.bind(this)
+    });
+    this.inputRef = this.$el.querySelector('input');
+    this.inputWrapperRef = this.$el.querySelector('.search-input-container');
+    this.inputRef.addEventListener('focus', this.open.bind(this));
+    this.inputRef.addEventListener('keyup', this.handleKeyUp.bind(this));
+    this.inputRef.addEventListener('input', _.debounce(this.handleChange.bind(this), 500));
+    document.addEventListener('mousedown', this.handleClickOutside.bind(this));
+  }
+
+  open(e) {
+    if (this.opened) return false;
+    event.target.select();
+    this.opened = true;
+    this.inputWrapperRef.appendChild(this.autocomplete.$el);
+  }
+
+  close() {
+    if (!this.opened) return false;
+    this.opened = false;
+    this.inputWrapperRef.removeChild(this.autocomplete.$el);
   }
 
   handleKeyUp({ keyCode }) {
@@ -18,19 +42,46 @@ export default class SearchInput extends Component {
 
     switch (keyCode) {
       case UP:
-        console.log('mark prev');
+        this.autocomplete.markPrev();
         break;
       case DOWN:
-        console.log('mark next');
+        this.autocomplete.markNext();
         break;
       case ENTER:
-        console.log('run search');
+        this.search();
         break;
       default:
     }
   }
 
-  handleChange() {
-    // console.log('handle change');
+  handleChange(e) {
+    if (!this.getAutocomplete) return;
+
+    searchUsers(e.target.value).then((users) => {
+      let autocompleteItmes = users.length > 5 ? users.slice(0, 5) : users;
+
+      autocompleteItmes = autocompleteItmes.map(({ fullInfo }) => {
+        return {
+          active: false,
+          text: fullInfo
+        }
+      });
+
+      this.autocomplete.update(autocompleteItmes);
+    });
+  }
+
+  handleClickOutside(e) {
+    if (!this.inputWrapperRef.contains(event.target)) {
+      this.close();
+    }
+  }
+
+  search() {
+    if (!this.runSearch) return;
+    this.close();
+    const active = this.autocomplete.getActive();
+    this.runSearch(active || this.inputRef.value);
+    document.activeElement.blur();
   }
 }

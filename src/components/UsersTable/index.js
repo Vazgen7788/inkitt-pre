@@ -2,7 +2,8 @@ import Component from '../../abstract/Component';
 import { fetchUsers } from '../../api/users';
 
 export default class UsersTable extends Component {
-  init() {
+  constructor() {
+    super(...arguments);
     this.$tableContent = this.$el.querySelector('.content');
     fetchUsers().then(users => {
       this.users = users;
