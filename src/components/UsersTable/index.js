@@ -14,10 +14,11 @@ export default class UsersTable extends Component {
     usersStore.on('set-users', users => {
       this.render(users)
     });
+    this.render();
   }
 
-  render(users) {
-    const content = this.getContent(users);
+  render(users = []) {
+    const content = users.length ? this.getContent(users) : this.getLoaderContent();
     this.$tableContent.innerHTML = content;
   }
 
@@ -33,6 +34,23 @@ export default class UsersTable extends Component {
         </tr>
       `;
     });
+    return html;
+  }
+
+  getLoaderContent(rowsCount = 20) {
+    let html = '';
+
+    while (rowsCount--) {
+      html += `
+        <tr>
+          <td class="animated-background"></td>
+          <td class="animated-background"></td>
+          <td class="animated-background"></td>
+          <td class="animated-background"></td>
+        </tr>
+      `;
+    }
+
     return html;
   }
 }

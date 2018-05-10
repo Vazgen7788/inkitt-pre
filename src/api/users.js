@@ -2,7 +2,7 @@ import faker from 'faker';
 import Promise from 'promise';
 import FuzzySearch from 'fuzzy-search';
 
-const FETCH_TIMEOUT = 0;
+const FETCH_TIMEOUT = 3000;
 const SEARCH_TIMEOUT = 100;
 const COUNT_OF_USERS = 3000;
 const COUNT_TO_DISPLAY = 100;

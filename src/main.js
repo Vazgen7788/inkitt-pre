@@ -1,13 +1,16 @@
 import './styles/app.scss';
-import Nav from './components/Nav';
 import * as components from './components';
+
+const App = {
+  components: []
+};
 
 document.addEventListener("DOMContentLoaded", function() {
   Object.keys(components).forEach((componentName) => {
     const elements = document.querySelectorAll(`[data-component='${componentName}']`);
 
     elements.forEach((el) => {
-      new components[componentName](el);
+      App.components.push(new components[componentName](el));
     });
   });
 });

@@ -61,9 +61,9 @@ export default class SearchInput extends Component {
       return this.autocomplete.update(this.getRecent());
     }
 
-    this.getAutocomplete(query).then(autocompleteItmes => {
+    this.getAutocomplete(query).then(autocompleteItems => {
       this.autocomplete.toggleRecent(false);
-      this.autocomplete.update(autocompleteItmes);
+      this.autocomplete.update(autocompleteItems);
     });
   }
 

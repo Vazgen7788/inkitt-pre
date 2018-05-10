@@ -28,7 +28,7 @@ export default class Autocomplete {
     }
   }
 
-  update(items, showRecent) {
+  update(items) {
     items.forEach((item, index) => {
       const currentIndex = this.showRecent ? index + 1 : index;
       const li = this.$el.childNodes[currentIndex];
