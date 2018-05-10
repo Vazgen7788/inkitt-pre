@@ -1,3 +1,6 @@
+import { fetchUsers, searchUsers } from '../api/users';
+import Promise from 'promise';
+
 export default (() => {
   const usersStore = {
     users: [],
@@ -40,6 +43,24 @@ export default (() => {
 
     getRecentSearches() {
       return usersStore.recentSearches;
+    },
+
+    fetchUsers() {
+      this.trigger('users-loading');
+      return new Promise(resolve => {
+        fetchUsers().then(users => {
+          this.setUsers(users);
+          resolve(users);
+        });
+      });
+    },
+
+    searchUsers(query) {
+      return new Promise(resolve => {
+        searchUsers(query).then(users => {
+          resolve(users);
+        });
+      })
     },
 
     trigger(event, ...args) {

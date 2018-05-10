@@ -6,7 +6,7 @@ import Promise from 'promise';
 export default class UsersSearchInput extends SearchInput {
   getAutocomplete(query) {
     return new Promise(resolve => {
-      searchUsers(query).then((users) => {
+      usersStore.searchUsers(query).then((users) => {
         let autocompleteItmes = users.length > 5 ? users.slice(0, 5) : users;
         usersStore.addRecentSearch(query);
 
@@ -32,7 +32,7 @@ export default class UsersSearchInput extends SearchInput {
   }
 
   runSearch(query) {
-    searchUsers(query).then((users) => {
+    usersStore.searchUsers(query).then((users) => {
       usersStore.setUsers(users);
       usersStore.addRecentSearch(query);
     });

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import debounce from 'debounce';
 import Component from '../../abstract/Component';
 import * as keyboardCodes from '../../constants/KeyboardNavKeyCodes';
 import Autocomplete from './Autocomplete';
@@ -19,7 +19,7 @@ export default class SearchInput extends Component {
     this.inputWrapperRef = this.$el.querySelector('.search-input-container');
     this.inputRef.addEventListener('focus', this.open.bind(this));
     this.inputRef.addEventListener('keyup', this.handleKeyUp.bind(this));
-    this.inputRef.addEventListener('input', _.debounce(this.handleChange.bind(this), 500));
+    this.inputRef.addEventListener('input', debounce(this.handleChange.bind(this), 500));
     document.addEventListener('mousedown', this.handleClickOutside.bind(this));
   }
 
@@ -53,8 +53,8 @@ export default class SearchInput extends Component {
     }
   }
 
-  handleChange(e) {
-    const query = e.target.value;
+  handleChange(event) {
+    const query = event.target.value;
 
     if (!query.length) {
       this.autocomplete.toggleRecent(true);

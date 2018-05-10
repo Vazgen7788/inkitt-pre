@@ -1,5 +1,4 @@
 import Component from '../../abstract/Component';
-import { fetchUsers } from '../../api/users';
 import usersStore from '../../store/users';
 
 export default class UsersTable extends Component {
@@ -7,13 +6,10 @@ export default class UsersTable extends Component {
     super(...arguments);
     this.$tableContent = this.$el.querySelector('.content');
 
-    fetchUsers().then(users => {
-      usersStore.setUsers(users);
-    });
+    usersStore.on('users-loading', () => this.render());
+    usersStore.on('set-users', users => this.render(users));
 
-    usersStore.on('set-users', users => {
-      this.render(users)
-    });
+    usersStore.fetchUsers();
     this.render();
   }
 

@@ -31,9 +31,9 @@
   },
   "dependencies": {
     "bootstrap": "^4.1.1",
+    "debounce": "^1.1.0",
     "faker": "^4.1.0",
     "fuzzy-search": "^2.0.1",
-    "lodash": "^4.17.10",
     "promise": "^8.0.1"
   }
 }
