@@ -1,3 +1,3 @@
-# inkitt-pure
+# inkitt-vanilla
 
 > Autocomplete with Vanilla JS

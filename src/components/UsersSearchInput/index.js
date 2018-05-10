@@ -20,7 +20,6 @@ export default class UsersSearchInput extends SearchInput {
     return new Promise(resolve => {
       usersStore.searchUsers(query).then((users) => {
         let autocompleteItmes = users.length > 5 ? users.slice(0, 5) : users;
-        usersStore.addRecentSearch(query);
 
         autocompleteItmes = autocompleteItmes.map(({ fullInfo }) => {
           return {
