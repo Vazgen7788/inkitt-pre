@@ -23,7 +23,7 @@ export default class SearchInput extends Component {
     document.addEventListener('mousedown', this.handleClickOutside.bind(this));
   }
 
-  open(e) {
+  open(event) {
     if (this.opened) return false;
     event.target.select();
     this.opened = true;
@@ -67,7 +67,7 @@ export default class SearchInput extends Component {
     });
   }
 
-  handleClickOutside(e) {
+  handleClickOutside(event) {
     if (!this.inputWrapperRef.contains(event.target)) {
       this.close();
     }
