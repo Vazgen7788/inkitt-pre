@@ -9,8 +9,7 @@ module.exports = {
     filename: 'build.js'
   },
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.(html)$/,
         use: {
           loader: 'html-loader'
@@ -78,7 +77,11 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
       compress: {
-        warnings: false
+        warnings: false,
+        keep_fnames: true
+      },
+      mangle: {
+        keep_fnames: true
       }
     }),
     new webpack.LoaderOptionsPlugin({
