@@ -14,8 +14,7 @@ export default class UsersTable extends Component {
   }
 
   render(users = []) {
-    const content = users.length ? this.getContent(users) : this.getLoaderContent();
-    this.$tableContent.innerHTML = content;
+    this.$tableContent.innerHTML = users.length ? this.getContent(users) : this.getLoaderContent();
   }
 
   getContent(users) {

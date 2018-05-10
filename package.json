@@ -34,6 +34,7 @@
     "debounce": "^1.1.0",
     "faker": "^4.1.0",
     "fuzzy-search": "^2.0.1",
+    "nprogress": "^0.2.0",
     "promise": "^8.0.1"
   }
 }

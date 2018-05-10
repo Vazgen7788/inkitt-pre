@@ -4,6 +4,18 @@ import usersStore from '../../store/users';
 import Promise from 'promise';
 
 export default class UsersSearchInput extends SearchInput {
+  constructor() {
+    super(...arguments);
+
+    usersStore.on('users-loading', () => {
+      this.inputRef.disabled = true;
+    });
+
+    usersStore.on('set-users', () => {
+      this.inputRef.disabled = false;
+    });
+  }
+
   getAutocomplete(query) {
     return new Promise(resolve => {
       usersStore.searchUsers(query).then((users) => {
