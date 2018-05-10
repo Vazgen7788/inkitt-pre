@@ -1,5 +1,6 @@
 import SearchInput from '../SearchInput';
 import { searchUsers } from '../../api/users';
+import usersStore from '../../store/users';
 import Promise from 'promise';
 
 export default class UsersSearchInput extends SearchInput {
@@ -21,6 +22,8 @@ export default class UsersSearchInput extends SearchInput {
   }
 
   runSearch(query) {
-    console.log(query, 'run search');
+    searchUsers(query).then((users) => {
+      usersStore.setUsers(users)
+    });
   }
 }

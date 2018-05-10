@@ -2,7 +2,6 @@ import _ from 'lodash';
 import Component from '../../abstract/Component';
 import * as keyboardCodes from '../../constants/KeyboardNavKeyCodes';
 import Autocomplete from './Autocomplete';
-import { searchUsers } from '../../api/users';
 import template from './index.html';
 
 export default class SearchInput extends Component {
@@ -57,16 +56,7 @@ export default class SearchInput extends Component {
   handleChange(e) {
     if (!this.getAutocomplete) return;
 
-    searchUsers(e.target.value).then((users) => {
-      let autocompleteItmes = users.length > 5 ? users.slice(0, 5) : users;
-
-      autocompleteItmes = autocompleteItmes.map(({ fullInfo }) => {
-        return {
-          active: false,
-          text: fullInfo
-        }
-      });
-
+    this.getAutocomplete(e.target.value).then(autocompleteItmes => {
       this.autocomplete.update(autocompleteItmes);
     });
   }
@@ -84,6 +74,7 @@ export default class SearchInput extends Component {
     this.close();
     this.inputRef.value = active || query;
     this.runSearch(this.inputRef.value);
+    this.autocomplete.removeActive();
     document.activeElement.blur();
   }
 }

@@ -11,6 +11,7 @@ export default class Autocomplete {
     this.$el = ul;
     this.autocompleteItem = li;
     this.search = search;
+    this.removeActive = this.removeActive.bind(this);
     this.$el.addEventListener('click', this.handleClick.bind(this));
   }
 
@@ -65,5 +66,13 @@ export default class Autocomplete {
   getActive() {
     const activeEl = this.$el.querySelector('.active');
     return activeEl && activeEl.innerHTML;
+  }
+
+  removeActive() {
+    this.$el.childNodes.forEach((node) => {
+      if (node.classList.contains('active')) {
+        node.classList.remove('active');
+      }
+    });
   }
 }
