@@ -8,6 +8,7 @@ export default class UsersSearchInput extends SearchInput {
     return new Promise(resolve => {
       searchUsers(query).then((users) => {
         let autocompleteItmes = users.length > 5 ? users.slice(0, 5) : users;
+        usersStore.addRecentSearch(query);
 
         autocompleteItmes = autocompleteItmes.map(({ fullInfo }) => {
           return {
@@ -21,9 +22,19 @@ export default class UsersSearchInput extends SearchInput {
     });
   }
 
+  getRecent() {
+    return usersStore.getRecentSearches().map((text) => {
+      return {
+        active: false,
+        text
+      }
+    });
+  }
+
   runSearch(query) {
     searchUsers(query).then((users) => {
-      usersStore.setUsers(users)
+      usersStore.setUsers(users);
+      usersStore.addRecentSearch(query);
     });
   }
 }

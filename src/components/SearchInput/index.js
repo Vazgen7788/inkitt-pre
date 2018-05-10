@@ -54,9 +54,15 @@ export default class SearchInput extends Component {
   }
 
   handleChange(e) {
-    if (!this.getAutocomplete) return;
+    const query = e.target.value;
 
-    this.getAutocomplete(e.target.value).then(autocompleteItmes => {
+    if (!query.length) {
+      this.autocomplete.toggleRecent(true);
+      return this.autocomplete.update(this.getRecent());
+    }
+
+    this.getAutocomplete(query).then(autocompleteItmes => {
+      this.autocomplete.toggleRecent(false);
       this.autocomplete.update(autocompleteItmes);
     });
   }
@@ -68,7 +74,6 @@ export default class SearchInput extends Component {
   }
 
   search(query) {
-    if (!this.runSearch) return;
     let active = this.autocomplete.getActive();
 
     this.close();

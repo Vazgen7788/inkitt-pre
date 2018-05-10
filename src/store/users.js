@@ -5,6 +5,7 @@ export default (() => {
   };
 
   const allListeners = [];
+  const MAX_RECENT_SEARCHES_COUNT = 5;
 
   return {
     setUsers(users) {
@@ -17,7 +18,28 @@ export default (() => {
     },
 
     addRecentSearch(query) {
-      recentSearches.push(query);
+      const { recentSearches } = usersStore;
+      if (!query.length) return recentSearches;
+
+      const alreadySearched = recentSearches.indexOf(query) !== -1;
+
+      if (!alreadySearched) {
+        if (recentSearches.length === MAX_RECENT_SEARCHES_COUNT) {
+          recentSearches.pop();
+        }
+
+        recentSearches.splice(0, 0, query);
+      } else {
+        const oldIndex = recentSearches.indexOf(query);
+        recentSearches.splice(oldIndex, 1);
+        recentSearches.splice(0, 0, query);
+      }
+
+      return recentSearches;
+    },
+
+    getRecentSearches() {
+      return usersStore.recentSearches;
     },
 
     trigger(event, ...args) {
@@ -44,7 +66,7 @@ export default (() => {
 
       listeners.forEach((item) => {
         const index = allListeners.indexOf(item);
-         allListeners.splice(index, 1);
+        allListeners.splice(index, 1);
       });
     }
   };
