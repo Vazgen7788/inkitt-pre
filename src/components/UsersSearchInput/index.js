@@ -1,7 +1,10 @@
 import SearchInput from '../SearchInput';
+import nprogress from 'nprogress';
 import { searchUsers } from '../../api/users';
 import usersStore from '../../store/users';
 import Promise from 'promise';
+
+nprogress.configure({ easing: 'ease', speed: 500 });
 
 export default class UsersSearchInput extends SearchInput {
   constructor() {
@@ -43,7 +46,9 @@ export default class UsersSearchInput extends SearchInput {
   }
 
   runSearch(query) {
+    nprogress.start();
     usersStore.searchUsers(query).then((users) => {
+      nprogress.done();
       usersStore.setUsers(users);
       usersStore.addRecentSearch(query);
     });

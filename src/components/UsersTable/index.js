@@ -7,14 +7,14 @@ export default class UsersTable extends Component {
     this.$tableContent = this.$el.querySelector('.content');
 
     usersStore.on('users-loading', () => this.render());
-    usersStore.on('set-users', users => this.render(users));
+    usersStore.on('set-users', users => this.render(users, true));
 
     usersStore.fetchUsers();
     this.render();
   }
 
-  render(users = []) {
-    this.$tableContent.innerHTML = users.length ? this.getContent(users) : this.getLoaderContent();
+  render(users = [], force = false) {
+    this.$tableContent.innerHTML = users.length || force  ? this.getContent(users) : this.getLoaderContent();
   }
 
   getContent(users) {

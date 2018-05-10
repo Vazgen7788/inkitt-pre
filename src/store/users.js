@@ -1,8 +1,5 @@
-import nprogress from 'nprogress';
 import Promise from 'promise';
 import { fetchUsers, searchUsers } from '../api/users';
-
-nprogress.configure({ easing: 'ease', speed: 500 });
 
 export default (() => {
   const usersStore = {
@@ -59,13 +56,7 @@ export default (() => {
     },
 
     searchUsers(query) {
-      nprogress.start();
-      return new Promise(resolve => {
-        searchUsers(query).then(users => {
-          nprogress.done();
-          resolve(users);
-        });
-      })
+      return searchUsers(query);
     },
 
     trigger(event, ...args) {
